@@ -44,7 +44,7 @@ Ganti `EC2_PUBLIC_IP` dengan IP publik EC2-mu (atau DNS publik AWS).
 `CN` **harus** sama dengan host di `PUBLIC_BASE_URL`.
 
 ```bash
-EC2_PUBLIC_IP=12.34.56.78
+EC2_PUBLIC_IP=54.175.200.213
 openssl req -newkey rsa:2048 -sha256 -nodes \
   -keyout certs/private.key \
   -x509 -days 3650 \
@@ -60,13 +60,13 @@ Hasil:
 
 ```env
 DATABASE_URL="postgresql://botadmin:botpass@localhost:5432/botplatform?schema=public"
-PUBLIC_BASE_URL="https://12.34.56.78:8443"
+PUBLIC_BASE_URL="https://54.175.200.213:8443"
 WEBHOOK_CERT_PATH="./certs/public.pem"
-ENCRYPTION_KEY="<openssl rand -hex 32>"
-WEBHOOK_SECRET_SALT="<openssl rand -hex 32>"
+ENCRYPTION_KEY="6a34950b5e62462b02d482c84180da40cac84a7b120578037d7dee900aa4ec7e"
+WEBHOOK_SECRET_SALT="b4e091937af67c0eb2ce3c779f3327b2efac0fdfd5367d17c45c112982aa432d"
 ADMIN_USERNAME="admin"
-ADMIN_PASSWORD="<password-kuat>"
-SESSION_SECRET="<openssl rand -hex 32>"
+ADMIN_PASSWORD="jakarta132"
+SESSION_SECRET="2f02ac9331c9464c2997a2ca7d84fde7caf9545c3d4772dc674496f9b96875f1"
 ```
 
 Generate secret:
@@ -78,7 +78,8 @@ openssl rand -hex 32
 
 ```bash
 docker compose up -d            # start Postgres
-npx prisma migrate deploy       # buat tabel
+set -a; source .env; set +a     # muat .env ke shell (untuk db:seed)
+npx prisma db push              # buat semua tabel dari schema
 npm run db:seed                 # buat admin user dari .env
 ```
 

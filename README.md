@@ -54,7 +54,7 @@ src/app/dashboard/          UI list + detail bot
 npm install
 cp .env.example .env         # isi ENCRYPTION_KEY dll (lihat di bawah)
 docker compose up -d         # Postgres (butuh Docker)
-npx prisma migrate dev       # buat tabel
+npx prisma db push           # buat tabel dari schema
 npm run db:seed              # buat admin user
 npm run dev                  # http://localhost:3000
 ```
