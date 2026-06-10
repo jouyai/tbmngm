@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BotStatus {
+  ACTIVE
+  INACTIVE
+  ERROR
+}
+
+model Bot {
+  id             String    @id @default(cuid())
+  // Telegram bot token, stored ENCRYPTED (see lib/crypto.ts)
+  tokenEnc       String
+  // Telegram numeric bot id (from getMe), used as a stable public route id
+  telegramBotId  String    @unique
+  username       String
+  name           String
+  status         BotStatus @default(INACTIVE)
+  webhookSecret  String
+  lastError      String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  config         BotConfig?
+  commands       CustomCommand[]
+  users          BotUser[]
+
+  @@index([status])
+}
+
+model BotConfig {
+  id              String  @id @default(cuid())
+  botId           String  @unique
+  bot             Bot     @relation(fields: [botId], references: [id], onDelete: Cascade)
+
+  // Feature flags
+  welcomeEnabled  Boolean @default(true)
+  commandsEnabled Boolean @default(true)
+  moderationEnabled Boolean @default(false)
+  broadcastEnabled  Boolean @default(true)
+
+  // Welcome / auto-reply
+  welcomeMessage  String? @default("Selamat datang, {name}!")
+
+  // Moderation settings (JSON: { bannedWords: string[], antiSpam: bool, ... })
+  moderation      Json    @default("{}")
+
+  updatedAt       DateTime @updatedAt
+}
+
+model CustomCommand {
+  id        String  @id @default(cuid())
+  botId     String
+  bot       Bot     @relation(fields: [botId], references: [id], onDelete: Cascade)
+
+  // e.g. "/help" or keyword "harga"
+  trigger   String
+  // Reply text. Supports {name} placeholder.
+  response  String
+  // Optional inline buttons: [{ text, url }]
+  buttons   Json    @default("[]")
+  // match as command (/x) or keyword contains
+  isCommand Boolean @default(true)
+  enabled   Boolean @default(true)
+  createdAt DateTime @default(now())
+
+  @@unique([botId, trigger])
+  @@index([botId])
+}
+
+model BotUser {
+  id          String   @id @default(cuid())
+  botId       String
+  bot         Bot      @relation(fields: [botId], references: [id], onDelete: Cascade)
+
+  telegramId  String   // user id
+  chatId      String   // chat to deliver broadcast to
+  firstName   String?
+  username    String?
+  isBlocked   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@unique([botId, chatId])
+  @@index([botId])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}

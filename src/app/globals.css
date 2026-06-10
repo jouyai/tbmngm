@@ -1,0 +1,175 @@
+:root {
+  --bg: #0f1115;
+  --panel: #1a1d24;
+  --panel-2: #232730;
+  --border: #2c313c;
+  --text: #e6e8ec;
+  --muted: #9aa3b2;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #eab308;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+button.secondary {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+}
+
+button.danger {
+  background: var(--red);
+}
+
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.badge.active {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--green);
+}
+
+.badge.inactive {
+  background: rgba(154, 163, 178, 0.15);
+  color: var(--muted);
+}
+
+.badge.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--red);
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+h1 {
+  font-size: 22px;
+}
+h2 {
+  font-size: 18px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+}
+
+.notice {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin: 8px 0;
+}
+.notice.err {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--red);
+}
+.notice.ok {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--green);
+}
